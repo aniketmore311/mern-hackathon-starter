@@ -85,4 +85,16 @@ authRouter.post(
   })
 );
 
+authRouter.get("/logout", (req, res) => {
+  return res
+    .cookie("access_token", "", {
+      httpOnly: true,
+      sameSite: true,
+      expires: new Date(0),
+    })
+    .json({
+      message: "logout successful",
+    });
+});
+
 module.exports = authRouter;
