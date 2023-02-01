@@ -3,6 +3,7 @@ const {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
+  DeleteObjectCommand,
 } = require("@aws-sdk/client-s3");
 const config = require("../config");
 
@@ -45,6 +46,20 @@ async function getFile(key) {
   }
   //@ts-expect-error
   return resp.Body;
+}
+
+//write a function to delete an object from aws bucket
+/**
+ * @param {string} key
+ */
+async function deleteFile(key) {
+  const resp = await client.send(
+    new DeleteObjectCommand({
+      Bucket: config.aws.bucketName,
+      Key: key,
+    })
+  );
+  return resp;
 }
 
 const s3Service = {
