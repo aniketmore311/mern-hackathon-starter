@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useFormik } from 'formik';
 import { signUpSchema } from '../../schemas';
 import axios from 'axios';
@@ -6,10 +6,23 @@ import axios from 'axios';
 const initialValues = {
   name: "",
   email: "",
+  phone: "",
   password: "",
-  confirm_password: ""
+  confirm_password: "",
+  emailOTP: "",
 }
 const Register = (props) => {
+
+  const [emailOTP, setEmailOTP] = useState(false)
+  const [phoneOTP, setPhoneOTP] = useState(false)
+
+  const handleEmailOTP = () => {
+    setEmailOTP(!emailOTP);
+  }
+
+  const handlePhoneOTP = () => {
+    setPhoneOTP(!phoneOTP);
+  }
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit} = useFormik({
     initialValues: initialValues,
@@ -18,8 +31,8 @@ const Register = (props) => {
       console.log(values);
       action.resetForm();
 
-      axios.post('http://localhost:8080/api/v1/auth/signup', values )
-        .then(res => console.log(res))
+      // axios.post('http://localhost:8080/api/v1/auth/signup', values )
+      //   .then(res => console.log(res))
     }
   })
 
@@ -37,6 +50,7 @@ const Register = (props) => {
             </span>
           </div>
           <div className="form-group mt-3">
+          
             <label htmlFor='name'>Full Name</label>
             <input
               type="text"
@@ -52,8 +66,10 @@ const Register = (props) => {
             { errors.name && touched.name ? (
               <p>{ errors.name }</p>
             ) : null}
+            
           </div>
-          <div className="form-group mt-3">
+          <div className="d-flex justify-content-between align-items-center form-group mt-3">
+          <div>
             <label htmlFor='email'>Email address</label>
             <input
               type="email"
@@ -69,7 +85,68 @@ const Register = (props) => {
             { errors.email && touched.email ? (
               <p>{ errors.email }</p>
             ) : null}
+            </div>
+            <button type="button"
+             class="p-1 align-self-end btn btn-outline-success" 
+             onClick={handleEmailOTP}
+             style={{ height: '40px', marginTop: '10px'}}>Verify Email</button>
           </div>
+
+
+          {emailOTP ? (<div className="form-group mt-3">
+            <label htmlFor='emailOTP'>Enter Email Otp</label>
+            <input
+              type="text"
+              id='emailOTP'
+              name='emailOTP'
+              autoComplete='off'
+              className="form-control mt-1"
+              placeholder="Otp"
+              value={values.emailOTP}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            /> </div>)  : null }
+      
+          
+          <div className="d-flex justify-content-between align-items-center form-group mt-3">
+          <div>
+            <label htmlFor='phone'>Phone</label>
+            <input
+              type="phone"
+              id='phone'
+              name='phone'
+              autoComplete='off'
+              className="form-control mt-1"
+              placeholder="Enter phone no"
+              value={values.phone}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+            { errors.phone && touched.phone ? (
+              <p>{ errors.phone }</p>
+            ) : null}
+              </div>
+            <button type="button" 
+             class="p-1 align-self-end btn btn-outline-success"
+             onClick={handlePhoneOTP}
+            style={{ height: '40px', marginTop: '10px'}}>Verify Phone</button>
+          </div>
+
+          {phoneOTP ? (<div className="form-group mt-3">
+            <label htmlFor='phoneOTP'>Enter Phone Otp</label>
+            <input
+              type="text"
+              id='phoneOTP'
+              name='phoneOTP'
+              autoComplete='off'
+              className="form-control mt-1"
+              placeholder="Otp"
+              value={values.phoneOTP}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            /> </div>)  : null }
+
+
           <div className="form-group mt-3">
             <label htmlFor='password'>Password</label>
             <input
