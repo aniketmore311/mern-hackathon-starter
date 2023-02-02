@@ -7,8 +7,12 @@ const http = require("http");
 const config = require("./src/config");
 const app = require("./src/app");
 const User = require("./src/models/User");
+const fs = require("fs");
 
 async function main() {
+  if (!fs.existsSync(config.app.uploadsDir)) {
+    fs.mkdirSync(config.app.uploadsDir);
+  }
   mongoose.set("strictQuery", true);
   await mongoose.connect(config.app.mongoURI, {});
   const server = http.createServer(app);

@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
+    isEmailConfirmed: {
+      type: Types.String,
+      default: true,
+    },
     password: {
       type: Types.String,
       required: true,
@@ -21,6 +25,10 @@ const userSchema = new mongoose.Schema(
     role: {
       type: Types.String,
       default: "user",
+    },
+    schemaVersion: {
+      type: Types.String,
+      default: "v1",
     },
   },
   {
