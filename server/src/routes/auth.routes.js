@@ -74,6 +74,7 @@ authRouter.post(
       .json({
         data: {
           accessToken,
+          user: user.toRespDTO()
         },
         metadata: {
           accessToken: {
